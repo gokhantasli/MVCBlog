@@ -1,0 +1,12 @@
+﻿@{
+    Layout = null;
+}
+@model IEnumerable<MVCBlog.ENTITY.Category>
+
+@foreach (MVCBlog.ENTITY.Category category in Model)
+{
+    <li><a href="~/Category/Index/@category.Id">@category.CategoryName (@category.Articles.Count)</a></li>
+}
+
+
+

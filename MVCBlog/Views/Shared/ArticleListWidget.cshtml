@@ -1,0 +1,49 @@
+﻿@{
+    Layout = null;
+}
+@model IEnumerable<MVCBlog.ENTITY.Article>
+@helper ShortenContent(string article)
+{if (article.Length > 300)
+    {
+        @article.Substring(0, 300);
+    }
+    else
+    {
+        @article;
+    }
+}
+@foreach (MVCBlog.ENTITY.Article article in Model)
+{
+    <div class="blog-posts col-blog">
+        <div class="post row">
+            <div class="col-sm-4">
+                <figure>
+                    <a href="/Article/Detail/@article.Id">
+                        <div class="text-overlay">
+                            <div class="info"><span>Read More</span></div>
+                        </div>
+                        <img src="@article.Resim.MediumImage " alt="" />
+                    </a>
+                </figure>
+            </div>
+            <div class="col-sm-8 post-content">
+                <div class="meta">
+                    <span class="date">@article.UploadDate.ToShortDateString()</span>
+                    <span class="comments">@article.Commentaries.Count <i class="icon-chat-1"></i></span>
+                    <span>
+                        @article.Like
+                        <img src="~/Content/like.png" />
+                    </span>
+                    <span>
+                        @article.View
+                        <img src="~/Content/view.png" />
+                    </span>
+                </div>
+
+                <h2 class="post-title"><a href="/Article/Detail/@article.Id">@article.Title</a></h2>
+                <p>@ShortenContent(article.Content)</p>
+            </div>
+        </div>
+    </div>
+}
+

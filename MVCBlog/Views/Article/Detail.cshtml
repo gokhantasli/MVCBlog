@@ -1,0 +1,170 @@
+﻿@model MVCBlog.ENTITY.Article
+@{
+    ViewBag.Title = Model.Title;
+}
+
+@section head{
+    <script src="~/Content/style/js/jquery.min.js"></script>
+}
+
+<script>
+    $(document).ready(function myfunction() {
+        $("a.like").click(function myfunction() {
+            var id = $(this).data("id");
+            var link = "/Article/Like/" + id;
+            $.ajax({
+                type: "GET",
+                url: link,
+                success: function (result) {
+                    $("a.like").remove();
+                    $(".liked").html(result);
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function myfunction() {
+        function viewed(id) {
+            var link = "/Article/Viewed/" + id;
+            $.ajax({
+                type: "GET",
+                url: link,
+                succcess: function (result) {
+                    html(result);
+                }
+            });
+        }
+    });
+
+</script>
+
+<div class="blog-posts classic-blog single">
+    <div class="post format-image">
+        <div class="meta">
+            <span class="date">@Model.UploadDate</span>
+            <span class="categories"><a href="/Category/Index/@Model.CategoryId">@Model.Category.CategoryName</a></span>
+            <span class="comments"><a href="#Yorum">@Model.Commentaries.Count <i class="icon-chat-1"></i></a></span>
+            @if (Session["Username"] != null)
+            {
+                <span>
+                    <a class="like" href="javascript:void(0);" data-id="@Model.Id">Like! </a>
+                    <span class="liked">@Model.Like</span>
+
+                    <img src="~/Content/like.png" />
+                </span>
+            }
+            else
+            {
+                <span>
+                    @Model.Like
+                    <img src="~/Content/like.png" />
+                </span>
+            }
+            <span>
+                @Model.View
+                <img src="~/Content/view.png" />
+            </span>
+        </div>
+        <h1 class="post-title">@Model.Title</h1>
+        <figure class="main">
+            <img src="@Model.Resim.MediumImage" alt="" />
+        </figure>
+        <div class="post-content">
+            <p>@Model.Content</p>
+            <div class="meta tags">
+                <a href="/Tag/Index/@Model.TagId">@Model.Tag.TagName</a>
+            </div>
+            @if (Session["Username"] != null)
+            {
+                <div class="click-share">
+                    <ul>
+                        @if (Session["Username"].ToString() == Model.User.UserName)
+                        {
+                            <li><a class="btn share-twitter" href="/Article/Update/@Model.Id">Update</a></li>
+                            <li><a class="btn share-pinterest" href="/Article/Delete/@Model.Id">Delete</a></li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            <!-- /.share-links -->
+
+        </div>
+    </div>
+    <!-- /.post -->
+
+</div>
+<!-- /.blog-posts -->
+
+<div class="about-author dark-wrapper">
+    @*<div class="author-image"> <img alt="" src="@Model.User." /> </div>*@
+    <div class="author-details">
+        <h3>About the Author (@Model.User.UserName) </h3>
+        @*<p>@Model.User.</p>*@
+        <ul class="social">
+            <li><a href="#"><i class="icon-s-linkedin"></i></a></li>
+        </ul>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div class="divide100"></div>
+<a id="Yorum" />
+<div id="comments">
+    <h3>COMMENTS (@Model.Commentaries.Count)</h3>
+    <ol id="singlecomments" class="commentlist">
+        @foreach (MVCBlog.ENTITY.Commentary comment in Model.Commentaries)
+        {
+            <li>
+                <div class="comment-wrapper">
+                    <div class="message">
+                        <div class="arrow-box">
+                            <div class="info">
+                                <div class="meta"><span>@comment.User.UserName</span> <span class="date">@comment.UploadDate</span> </div>
+                            </div>
+                            <p>@comment.Comment</p>
+                            @if (Session["UserID"] != null)
+                            {
+                                <div class="click-share">
+                                    <ul>
+                                        @if (Session["UserID"].ToString() == comment.UserID)
+                                        {
+                                            <li><a class="btn share-twitter" href="/Comment/Update/@comment.Id">Update</a></li>
+                                            <li><a class="btn share-pinterest" href="/Comment/Delete/@comment.Id">Delete</a></li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </li>
+        }
+    </ol>
+</div>
+<!-- /#comments -->
+@if (Session["Username"] != null)
+{
+    <div class="divide100"></div>
+    <div class="comment-form-wrapper">
+        <h3>Would you like to share your thoughts?</h3>
+        @*<p>Your email address will not be published. Required fields are marked *</p>*@
+        <form class="comment-form" name="form_name" action="/Comment/AddComment/@Model.Id" method="post">
+            @*<div class="name-field">
+                    <label><i class="icon-user"></i></label>
+                    <input type="text" name="name" placeholder="Name Surname *" value="@(Session["Username"])" />
+                </div>*@
+            <div class="message-field">
+                <textarea name="content" id="textarea" rows="5" cols="30" placeholder="Enter your comment here..."></textarea>
+            </div>
+            <input type="submit" value="Submit" name="submit" class="btn btn-submit" />
+        </form>
+    </div>
+}
+else
+{
+    <br /><br />
+    <p>Would you like to share your thoughts? Please <a href="/User/Index">login here</a> and share your thoughts!</p>
+}
+
+<!-- /.comment-form-wrapper -->

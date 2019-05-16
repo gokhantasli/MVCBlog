@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewBag.Title = "AddArticle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Session["Username"] == null)
+{
+    Response.Redirect("/User/Index");
+}
+else
+{
+    <!DOCTYPE html>
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Add New Article</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <style>
+                .articlepage {
+                    border: 5px double black;
+                    margin: auto;
+                    padding: 35px;
+                }
+            </style>
+    </head>
+    <body>
+        <div class="articlepage">
+            <h1>Add New Article</h1>
+            <form method="post" enctype="multipart/form-data">
+                <table>
+                    <tr>
+                        <td><b>Title:</b></td>
+                        <td><input type="text" class="form-control" name="Title"></td>
+                    </tr>
+                    <tr>
+                        <td><b>Select Category:</b></td>
+                        <td>
+                            <select name="Category">
+                                @foreach (var category in ViewBag.Categories)
+                                {
+                                    <option value="@category.Id">@category.CategoryName</option>
+
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Select Tag:</b></td>
+                        <td>
+                            <select name="Tag">
+                                @foreach (var tag in ViewBag.Tags)
+                                {
+                                    <option value="@tag.Id">@tag.TagName</option>
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Content:</b></td>
+                        <td>
+                            <textarea class="form-control" rows="14" cols="100"  id="comment" name="Content"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Image:</b></td>
+                        <td>
+                            <input type="file" name="image" value=""/>
+                        </td>
+                    </tr>
+                </table>         
+                <button class="btn btn-info" type="submit">ADD</button>
+            </form>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('.js-example-basic-multiple').select2();
+            });
+        </script>
+    </body>
+</html>
+}
+

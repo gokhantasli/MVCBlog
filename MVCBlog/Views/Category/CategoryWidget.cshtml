@@ -1,0 +1,14 @@
+﻿@{
+    Layout = null;
+}
+@model IEnumerable<MVCBlog.ENTITY.Category>
+<div class="sidebox widget">
+    <h3 class="widget-title section-title">Categories</h3>
+    <ul class="circled">
+        @foreach (MVCBlog.ENTITY.Category category in Model)
+        {
+            <li><a href="~/Category/Index/@category.Id">@category.CategoryName (@category.Articles.Count)</a></li>
+        }
+    </ul>
+</div>
+

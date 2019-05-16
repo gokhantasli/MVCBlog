@@ -1,0 +1,22 @@
+﻿@model MVCBlog.ENTITY.Commentary
+@{
+    ViewBag.Title = "Update";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="divide100"></div>
+<div class="comment-form-wrapper">
+    <h3>Would you like to share your thoughts?</h3>
+    @*<p>Your email address will not be published. Required fields are marked *</p>*@
+    <form class="comment-form" name="form_name" action="/Comment/Update/@Model.Id" method="post">
+        @*<div class="name-field">
+                <label><i class="icon-user"></i></label>
+                <input type="text" name="name" placeholder="Name Surname *" value="@(Session["Username"])" />
+            </div>*@
+        <div class="message-field">
+            <textarea name="content" id="textarea" rows="5" cols="30" >@Model.Comment</textarea>
+        </div>
+        <input type="submit" value="Update" name="submit" class="btn btn-submit" />
+    </form>
+</div>
+

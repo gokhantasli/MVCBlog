@@ -1,0 +1,21 @@
+﻿@{
+    Layout = null;
+}
+@model IEnumerable<MVCBlog.ENTITY.Article>
+<div class="sidebox widget">
+    <h3 class="widget-title section-title">Popular Posts</h3>
+    <ul class="post-list">
+        @foreach (MVCBlog.ENTITY.Article article in Model)
+        {
+            <li>
+                <div class="icon-overlay"> <a href="/Article/Detail/@article.Id"><img src="@article.Resim.SmallImage" alt="" /> </a> </div>
+                <div class="meta">
+                    <h5><a href="/Article/Detail/@article.Id">@article.Title</a></h5>
+                    <em>@article.UploadDate.ToShortDateString() <span class="comments"><a href="#">@article.Commentaries.Count <i class="icon-chat-1"></i></a></span></em>
+                </div>
+            </li>
+        }
+    </ul>
+    <!-- /.post-list -->
+</div>
+
